@@ -17,11 +17,13 @@ package
 		private var ax:Number = 0;
 		private var ay:Number = 0;
 		private var myAI:AI;
-		public function Snake(field:Field) 
+		private var myBitmapSegmentMode:Boolean;
+		public function Snake(field:Field, isBitmapView:Boolean) //isBitmapView - чи з растровими сегментами зщ файлу чи з векторними кругами 
 		{
 			myField = field
+			myBitmapSegmentMode = isBitmapView
 			
-			headSegment = new Segment()
+			headSegment = new Segment(myBitmapSegmentMode)
 			myField.addChild(headSegment)
 			
 			headSegment.x=400
@@ -38,7 +40,7 @@ package
 		public function createNewSegment():void 
 		{
 			//створити новий сегмент
-			var s:Segment = new Segment()
+			var s:Segment = new Segment(myBitmapSegmentMode)
 			s.x = this.segments[segments.length-1].x
 			s.y = this.segments[segments.length-1].y
 			//додати його на myField
