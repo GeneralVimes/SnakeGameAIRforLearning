@@ -15,6 +15,7 @@ package
 		private var awayMarker:AwayMarker
 		
 		private var stageRect:Rectangle
+		private var foodList:Vector.<Food>
 		public function Field() 
 		{
 			super();
@@ -33,6 +34,18 @@ package
 			//створили маркер, що вказуватиме, коли змійка за екраном
 			awayMarker = new AwayMarker()
 			addChild(awayMarker)
+			
+			foodList = new Vector.<Food>()
+			createFood()
+		}
+		
+		private function createFood():void 
+		{//створюємо нову їжу
+			var f:Food = new Food();
+			f.x = stageRect.width * Math.random();
+			f.y = stageRect.height * Math.random();
+			addChild(f)
+			foodList.push(f)
 		}
 		public function step(dt:Number):void{
 			snake.step(dt)
