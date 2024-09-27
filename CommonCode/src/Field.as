@@ -3,6 +3,7 @@ package
 	import flash.display.Sprite;
 	import flash.events.AccelerometerEvent;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
 	
@@ -230,6 +231,11 @@ package
 		public function getFoodList():Vector.<Food>
 		{
 			return foodList.slice()
+		}
+		
+		public function handleMouseDown(e:flash.events.MouseEvent):void 
+		{
+			trace("mouseDown",e.stageX, e.stageY,e.target)
 		}
 		
 		private function initBackground(newWidth:int, newHeight:int):void 

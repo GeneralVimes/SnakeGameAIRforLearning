@@ -8,6 +8,7 @@ package
 	import flash.events.AccelerometerEvent;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.events.MouseEvent;
 	import flash.sensors.Accelerometer;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
@@ -40,12 +41,18 @@ package
 			field = new Field()
 			addChild(field)
 			
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			stage.addEventListener(Event.ENTER_FRAME, onFrame)
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
 			stage.addEventListener(Event.RESIZE, onResize);
 			
 			var acc:Accelerometer = new Accelerometer()
 			acc.addEventListener(AccelerometerEvent.UPDATE, onAccelerometerUpdate);
+		}
+		
+		private function onMouseDown(e:MouseEvent):void 
+		{
+			field.handleMouseDown(e)
 		}
 		
 		private function onAccelerometerUpdate(e:AccelerometerEvent):void 
