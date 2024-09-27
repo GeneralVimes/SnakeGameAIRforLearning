@@ -18,10 +18,10 @@ package states
 		{
 			super.handleKeyDown(e);
 			if (e.keyCode==Keyboard.SPACE){
-				myField.currentState = new NormalState(myField);
+				myField.startState(NormalState);
 			}else{
 				if (e.keyCode==Keyboard.ESCAPE){
-					myField.currentState = new EditorState(myField);
+					myField.startState(EditorState);
 				}	
 			}
 		}		

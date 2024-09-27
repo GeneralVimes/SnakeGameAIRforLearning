@@ -28,9 +28,12 @@ package states
 		override public function handleKeyDown(e:flash.events.KeyboardEvent):void 
 		{
 			super.handleKeyDown(e);
-			if (e.keyCode==Keyboard.DELETE){
-				myField.currentState = new NormalState(myField);
+			if (!myField.handleSnakeAccelerationKeys(e)){
+				if (e.keyCode==Keyboard.DELETE){
+					myField.startState(NormalState)
+				}				
 			}
+
 		}
 	}
 

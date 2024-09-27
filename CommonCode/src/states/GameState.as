@@ -29,6 +29,16 @@ package states
 			
 		}
 		
+		public function initialize(paramsOb:Object):void 
+		{
+			
+		}		
+		
+		public function finalize():void 
+		{
+			
+		}
+		
 	}
 
 }

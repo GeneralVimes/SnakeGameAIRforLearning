@@ -22,13 +22,16 @@ package states
 		override public function handleKeyDown(e:flash.events.KeyboardEvent):void 
 		{
 			super.handleKeyDown(e);
-			if (e.keyCode==Keyboard.SPACE){
-				myField.currentState = new PauseState(myField);
-			}else{
-				if (e.keyCode==Keyboard.DELETE){
-					myField.currentState = new CheaterState(myField);
-				}
+			if (!myField.handleSnakeAccelerationKeys(e)){
+				if (e.keyCode==Keyboard.SPACE){
+					myField.startState(PauseState);
+				}else{
+					if (e.keyCode==Keyboard.DELETE){
+						myField.startState(CheaterState);
+					}
+				}				
 			}
+			
 		}
 	}
 

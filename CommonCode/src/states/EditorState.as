@@ -19,7 +19,7 @@ package states
 		{
 			super.handleKeyDown(e);
 			if (e.keyCode==Keyboard.ESCAPE){
-				myField.currentState = new NormalState(myField);
+				myField.startState(NormalState);
 			}	
 		}	
 		

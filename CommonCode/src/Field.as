@@ -22,7 +22,7 @@ package
 		private var stageRect:Rectangle
 		private var foodList:Vector.<Food>
 
-		public var currentState:GameState
+		private var currentState:GameState
 		public function Field() 
 		{
 			super();
@@ -36,7 +36,7 @@ package
 			//просто малюємо жовтий прямокутник 800х600
 			initBackground(Main.self.stage.stageWidth, Main.self.stage.stageHeight)
 			
-			snake = new Snake(this, true);//при створенні змійки передаємо їй поле, щоб вона знала,
+			snake = new Snake(this, true, false);//при створенні змійки передаємо їй поле, щоб вона знала,
 			//де розташовувати графічні сегменти
 			//створили маркер, що вказуватиме, коли змійка за екраном
 			awayMarker = new AwayMarker()
@@ -47,8 +47,16 @@ package
 			//	createFood()
 			//}	
 			
-			currentState = new NormalState(this);
+			startState(NormalState)
 		}	
+		
+		public function startState(stateClass:Class, paramsOb:Object=null):void{
+			if (currentState){
+				currentState.finalize();
+			}
+			currentState = new stateClass(this)
+			currentState.initialize(paramsOb)
+		}
 		
 		private function removeFood(f:Food):void{
 			var id:int = foodList.indexOf(f);
@@ -213,30 +221,7 @@ package
 		public function handleKeyDown(e:flash.events.KeyboardEvent):void 
 		{
 			currentState.handleKeyDown(e);
-			//switch (e.keyCode){//натискання клавіш курсора буде міняти прискорення для змійки, щоб вона рухалася плавно
-			//	case Keyboard.UP:{
-			//		snake.receiveAcceleration(0,-Constants.defaultAcceleration)
-			//		break;
-			//	}
-			//	case Keyboard.DOWN:{
-			//		snake.receiveAcceleration(0,Constants.defaultAcceleration)
-			//		break;					
-			//	}
-			//	case Keyboard.LEFT:{
-			//		snake.receiveAcceleration(-Constants.defaultAcceleration,0)
-			//		break;						
-			//	}
-			//	case Keyboard.RIGHT:{
-			//		snake.receiveAcceleration(Constants.defaultAcceleration,0)
-			//		break;					
-			//	}
-			//	case Keyboard.SPACE:{
-			//		currentState = new PauseState(this)
-			//	}
-			//	//case Keyboard.ESCAPE:{
-			//	//	isEditor = !isEditor;
-			//	//}
-			//}
+
 		}
 		
 		public function handleNewSize(newWidth:int, newHeight:int):void 
@@ -282,6 +267,34 @@ package
 			}else{
 				this.createFood(fx, fy)
 			}
+		}
+		
+		public function handleSnakeAccelerationKeys(e:flash.events.KeyboardEvent):Boolean 
+		{
+			var res:Boolean = false;
+			switch (e.keyCode){//натискання клавіш курсора буде міняти прискорення для змійки, щоб вона рухалася плавно
+				case Keyboard.UP:{
+					snake.receiveAcceleration(0, -Constants.defaultAcceleration)
+					res = true;
+					break;
+				}
+				case Keyboard.DOWN:{
+					snake.receiveAcceleration(0, Constants.defaultAcceleration)
+					res = true;
+					break;					
+				}
+				case Keyboard.LEFT:{
+					snake.receiveAcceleration( -Constants.defaultAcceleration, 0)
+					res = true;
+					break;						
+				}
+				case Keyboard.RIGHT:{
+					snake.receiveAcceleration(Constants.defaultAcceleration, 0)
+					res = true;
+					break;					
+				}
+			}			
+			return res;
 		}
 		
 		private function initBackground(newWidth:int, newHeight:int):void 
