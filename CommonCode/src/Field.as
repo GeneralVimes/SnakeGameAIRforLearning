@@ -31,6 +31,7 @@ package
 			initBackground(Main.self.stage.stageWidth, Main.self.stage.stageHeight)
 			
 			snake = new Snake(this);//при створенні змійки передаємо їй поле, щоб вона знала,
+			snake.createAI()
 			//де розташовувати графічні сегменти
 			//створили маркер, що вказуватиме, коли змійка за екраном
 			awayMarker = new AwayMarker()
@@ -220,6 +221,16 @@ package
 					-e.accelerationX * Constants.defaultAcceleration,
 					e.accelerationY * Constants.defaultAcceleration
 				);
+		}
+		
+		public function getScreenRect():Rectangle 
+		{
+			return stageRect.clone()
+		}
+		
+		public function getFoodList():Vector.<Food>
+		{
+			return foodList.slice()
 		}
 		
 		private function initBackground(newWidth:int, newHeight:int):void 
