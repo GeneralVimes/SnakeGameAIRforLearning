@@ -1,5 +1,6 @@
 package 
 {
+	import flash.geom.Rectangle;
 	/**
 	 * ...
 	 * @author ...
@@ -15,6 +16,7 @@ package
 		private var vy:Number = 0;
 		private var ax:Number = 0;
 		private var ay:Number = 0;
+		private var myAI:AI;
 		public function Snake(field:Field) 
 		{
 			myField = field
@@ -73,12 +75,31 @@ package
 				s1.x = s0.x-dx*coef
 				s1.y = s0.y-dy*coef
 			}
+			
+			if (myAI){
+				myAI.makeStep(dt)
+			}
 		}
 		
 		public function receiveAcceleration(newAx:Number, newAy:Number):void 
 		{
 			ax = newAx
 			ay = newAy
+		}
+		
+		public function createAI():void 
+		{
+			myAI = new AI(this)
+		}
+		
+		public function getMyScreenRect():Rectangle 
+		{
+			return myField.getScreenRect()
+		}
+		
+		public function getMyFoodList():Vector.<Food>
+		{
+			return myField.getFoodList()
 		}
 		//для отримання координат голови робимо геттери
 		public function get headX():Number{
