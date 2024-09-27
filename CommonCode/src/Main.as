@@ -5,8 +5,10 @@ package
 	import flash.display.Sprite;
 	import flash.display.StageScaleMode;
 	import flash.display.StageAlign;
+	import flash.events.AccelerometerEvent;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
+	import flash.sensors.Accelerometer;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -41,6 +43,14 @@ package
 			stage.addEventListener(Event.ENTER_FRAME, onFrame)
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
 			stage.addEventListener(Event.RESIZE, onResize);
+			
+			var acc:Accelerometer = new Accelerometer()
+			acc.addEventListener(AccelerometerEvent.UPDATE, onAccelerometerUpdate);
+		}
+		
+		private function onAccelerometerUpdate(e:AccelerometerEvent):void 
+		{
+			field.handleAccelerometer(e)
 		}
 		
 		private function onResize(e:Event):void 

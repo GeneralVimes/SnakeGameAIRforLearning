@@ -1,6 +1,7 @@
 package 
 {
 	import flash.display.Sprite;
+	import flash.events.AccelerometerEvent;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
@@ -36,9 +37,10 @@ package
 			addChild(awayMarker)
 			
 			foodList = new Vector.<Food>()
-			createFood()
-		}
-		
+			//for (var k:int = 0; k < 10; k++){
+			//	createFood()
+			//}			
+		}		
 		private function createFood():void 
 		{//створюємо нову їжу
 			var f:Food = new Food();
@@ -51,6 +53,23 @@ package
 			snake.step(dt)
 			updateAwayMarkerBetter()
 			//updateAwayMarker()
+			
+			//пробігамося по їжі та перевіряємо, чи співпадають координат голови та їжі
+			for (var i:int = 0; i < foodList.length; i++){
+				var f:Food = foodList[i];
+				var dx:Number = f.x - snake.headX;
+				var dy:Number = f.y - snake.headY;
+				if (dx*dx+dy*dy<=900){
+					//якщо так, їжа зникає, а змійка збільшується на 1
+					f.parent.removeChild(f);//прибираємо їжу з екрану
+					foodList.removeAt(i)//прибираємо їжу зі списку
+					snake.createNewSegment()//збільшуємо змію
+				}
+			}
+			
+			if (foodList.length<3){
+				createFood()
+			}
 		}
 		
 		private function updateAwayMarkerBetter():void 
@@ -193,6 +212,14 @@ package
 		public function handleNewSize(newWidth:int, newHeight:int):void 
 		{
 			this.initBackground(newWidth, newHeight)			
+		}
+		
+		public function handleAccelerometer(e:flash.events.AccelerometerEvent):void 
+		{
+			snake.receiveAcceleration(
+					-e.accelerationX * Constants.defaultAcceleration,
+					e.accelerationY * Constants.defaultAcceleration
+				);
 		}
 		
 		private function initBackground(newWidth:int, newHeight:int):void 

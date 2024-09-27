@@ -33,7 +33,7 @@ package
 			}
 		}
 		
-		private function createNewSegment():void 
+		public function createNewSegment():void 
 		{
 			//створити новий сегмент
 			var s:Segment = new Segment()
