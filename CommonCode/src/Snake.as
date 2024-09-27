@@ -17,9 +17,13 @@ package
 		private var ax:Number = 0;
 		private var ay:Number = 0;
 		private var myAI:AI;
-		public function Snake(field:Field) 
+		public function Snake(field:Field, hasAI:Boolean=true) 
 		{
 			myField = field
+			
+			if (hasAI){
+				this.createAI()
+			}
 			
 			headSegment = new Segment()
 			myField.addChild(headSegment)
@@ -87,7 +91,7 @@ package
 			ay = newAy
 		}
 		
-		public function createAI():void 
+		private function createAI():void 
 		{
 			myAI = new AI(this)
 		}
