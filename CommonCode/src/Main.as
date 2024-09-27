@@ -5,6 +5,8 @@ package
 	import flash.display.Sprite;
 	import flash.display.StageScaleMode;
 	import flash.display.StageAlign;
+	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.system.Capabilities;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
@@ -15,6 +17,7 @@ package
 	 */
 	public class Main extends Sprite 
 	{	
+		private var field:Field;
 		public static var self:Main;
 		
 		public var config:MainConfig;
@@ -32,21 +35,22 @@ package
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			
-			var spr:Sprite = new Sprite();
-			spr.graphics.beginFill(0xff0000, 1);
-			spr.graphics.drawCircle(0, 0, 50);
-			spr.graphics.endFill();
-			addChild(spr);
-			spr.x = 100;
-			spr.y = 100;
+			field = new Field()
+			addChild(field)
 			
-			var tf:TextField = new TextField();
-			tf.text = "Hello!"
-			tf.setTextFormat(new TextFormat("Arial", 32, 0x0000ff));
-			
-			tf.x = 250;
-			tf.y = 50;
-			addChild(tf);
+			stage.addEventListener(Event.ENTER_FRAME, onFrame)
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
+		}
+		
+		private function onKeyDown(e:KeyboardEvent):void 
+		{
+			field.handleKeyDown(e)
+		}
+		//що відбувається кожен кадр
+		private function onFrame(e:Event):void 
+		{
+			//поле має зреагувати на плин часу
+			field.step(0.03)
 		}
 
 		
