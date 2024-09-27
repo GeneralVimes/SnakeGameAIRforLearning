@@ -20,6 +20,7 @@ package
 		private var foodList:Vector.<Food>
 		
 		public var isPaused:Boolean = false;
+		public var isEditor:Boolean = false;
 		public function Field() 
 		{
 			super();
@@ -43,17 +44,28 @@ package
 			//for (var k:int = 0; k < 10; k++){
 			//	createFood()
 			//}			
-		}		
-		private function createFood():void 
+		}	
+		
+		private function removeFood(f:Food):void{
+			var id:int = foodList.indexOf(f);
+			if (id!=-1){
+				foodList.removeAt(id)
+			}
+			if (f.parent){
+				f.parent.removeChild(f)
+			}
+		}
+		
+		private function createFood(fx:Number, fy:Number):void 
 		{//створюємо нову їжу
 			var f:Food = new Food();
-			f.x = stageRect.width * Math.random();
-			f.y = stageRect.height * Math.random();
+			f.x = fx//;
+			f.y = fy//;
 			addChild(f)
 			foodList.push(f)
 		}
 		public function step(dt:Number):void{
-			if (isPaused){
+			if (isPaused || isEditor){
 				return
 			}
 			snake.step(dt)
@@ -74,7 +86,7 @@ package
 			}
 			
 			if (foodList.length<3){
-				createFood()
+				createFood(stageRect.width * Math.random(),stageRect.height * Math.random())
 			}
 		}
 		
@@ -215,6 +227,9 @@ package
 				case Keyboard.SPACE:{
 					isPaused = !isPaused;
 				}
+				case Keyboard.ESCAPE:{
+					isEditor = !isEditor;
+				}
 			}
 		}
 		
@@ -243,7 +258,14 @@ package
 		
 		public function handleMouseDown(e:flash.events.MouseEvent):void 
 		{
-			trace("mouseDown",e.stageX, e.stageY,e.target)
+			trace("mouseDown", e.stageX, e.stageY, e.target)
+			if (isEditor){
+				if (e.target is Food){//прибрати цю їжу з екрану
+					removeFood(e.target as Food)
+				}else{//створити нову у координатах
+					createFood(e.stageX, e.stageY)
+				}
+			}
 		}
 		
 		private function initBackground(newWidth:int, newHeight:int):void 
