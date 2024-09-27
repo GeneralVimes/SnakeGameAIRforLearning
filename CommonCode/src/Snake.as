@@ -18,10 +18,15 @@ package
 		private var ay:Number = 0;
 		private var myAI:AI;
 		private var myBitmapSegmentMode:Boolean;
-		public function Snake(field:Field, isBitmapView:Boolean) //isBitmapView - чи з растровими сегментами зщ файлу чи з векторними кругами 
+		public function Snake(field:Field, isBitmapView:Boolean, hasAI:Boolean=true) //isBitmapView - чи з растровими сегментами зщ файлу чи з векторними кругами 
+		//hasAI - чи буде у змійки ШІ
 		{
 			myField = field
 			myBitmapSegmentMode = isBitmapView
+			
+			if (hasAI){
+				this.createAI()
+			}	
 			
 			headSegment = new Segment(myBitmapSegmentMode)
 			myField.addChild(headSegment)
@@ -89,7 +94,7 @@ package
 			ay = newAy
 		}
 		
-		public function createAI():void 
+		private function createAI():void 
 		{
 			myAI = new AI(this)
 		}

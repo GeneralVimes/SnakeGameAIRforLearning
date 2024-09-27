@@ -31,7 +31,6 @@ package
 			initBackground(Main.self.stage.stageWidth, Main.self.stage.stageHeight)
 			
 			snake = new Snake(this, true);//при створенні змійки передаємо їй поле, щоб вона знала,
-			snake.createAI()
 			//де розташовувати графічні сегменти
 			//створили маркер, що вказуватиме, коли змійка за екраном
 			awayMarker = new AwayMarker()
