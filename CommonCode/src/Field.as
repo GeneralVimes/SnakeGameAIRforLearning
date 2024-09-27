@@ -18,6 +18,8 @@ package
 		
 		private var stageRect:Rectangle
 		private var foodList:Vector.<Food>
+		
+		public var isPaused:Boolean = false;
 		public function Field() 
 		{
 			super();
@@ -51,6 +53,9 @@ package
 			foodList.push(f)
 		}
 		public function step(dt:Number):void{
+			if (isPaused){
+				return
+			}
 			snake.step(dt)
 			updateAwayMarkerBetter()
 			//updateAwayMarker()
@@ -206,6 +211,9 @@ package
 				case Keyboard.RIGHT:{
 					snake.receiveAcceleration(Constants.defaultAcceleration,0)
 					break;					
+				}
+				case Keyboard.SPACE:{
+					isPaused = !isPaused;
 				}
 			}
 		}
