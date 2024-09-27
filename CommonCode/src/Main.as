@@ -40,6 +40,12 @@ package
 			
 			stage.addEventListener(Event.ENTER_FRAME, onFrame)
 			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyDown)
+			stage.addEventListener(Event.RESIZE, onResize);
+		}
+		
+		private function onResize(e:Event):void 
+		{
+			field.handleNewSize(stage.stageWidth, stage.stageHeight)
 		}
 		
 		private function onKeyDown(e:KeyboardEvent):void 
