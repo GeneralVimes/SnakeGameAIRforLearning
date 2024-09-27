@@ -6,6 +6,9 @@ package
 	import flash.events.MouseEvent;
 	import flash.geom.Rectangle;
 	import flash.ui.Keyboard;
+	import states.GameState;
+	import states.NormalState;
+	import states.PauseState;
 	
 	/**
 	 * ...
@@ -18,9 +21,8 @@ package
 		
 		private var stageRect:Rectangle
 		private var foodList:Vector.<Food>
-		
-		public var isPaused:Boolean = false;
-		public var isEditor:Boolean = false;
+
+		public var currentState:GameState
 		public function Field() 
 		{
 			super();
@@ -43,7 +45,9 @@ package
 			foodList = new Vector.<Food>()
 			//for (var k:int = 0; k < 10; k++){
 			//	createFood()
-			//}			
+			//}	
+			
+			currentState = new NormalState(this);
 		}	
 		
 		private function removeFood(f:Food):void{
@@ -65,9 +69,10 @@ package
 			foodList.push(f)
 		}
 		public function step(dt:Number):void{
-			if (isPaused || isEditor){
-				return
-			}
+			currentState.performStep(dt)
+		}
+		
+		public function doNormalStep(dt:Number):void{
 			snake.step(dt)
 			updateAwayMarkerBetter()
 			//updateAwayMarker()
@@ -87,7 +92,7 @@ package
 			
 			if (foodList.length<3){
 				createFood(stageRect.width * Math.random(),stageRect.height * Math.random())
-			}
+			}			
 		}
 		
 		private function updateAwayMarkerBetter():void 
@@ -207,30 +212,31 @@ package
 		
 		public function handleKeyDown(e:flash.events.KeyboardEvent):void 
 		{
-			switch (e.keyCode){//натискання клавіш курсора буде міняти прискорення для змійки, щоб вона рухалася плавно
-				case Keyboard.UP:{
-					snake.receiveAcceleration(0,-Constants.defaultAcceleration)
-					break;
-				}
-				case Keyboard.DOWN:{
-					snake.receiveAcceleration(0,Constants.defaultAcceleration)
-					break;					
-				}
-				case Keyboard.LEFT:{
-					snake.receiveAcceleration(-Constants.defaultAcceleration,0)
-					break;						
-				}
-				case Keyboard.RIGHT:{
-					snake.receiveAcceleration(Constants.defaultAcceleration,0)
-					break;					
-				}
-				case Keyboard.SPACE:{
-					isPaused = !isPaused;
-				}
-				case Keyboard.ESCAPE:{
-					isEditor = !isEditor;
-				}
-			}
+			currentState.handleKeyDown(e);
+			//switch (e.keyCode){//натискання клавіш курсора буде міняти прискорення для змійки, щоб вона рухалася плавно
+			//	case Keyboard.UP:{
+			//		snake.receiveAcceleration(0,-Constants.defaultAcceleration)
+			//		break;
+			//	}
+			//	case Keyboard.DOWN:{
+			//		snake.receiveAcceleration(0,Constants.defaultAcceleration)
+			//		break;					
+			//	}
+			//	case Keyboard.LEFT:{
+			//		snake.receiveAcceleration(-Constants.defaultAcceleration,0)
+			//		break;						
+			//	}
+			//	case Keyboard.RIGHT:{
+			//		snake.receiveAcceleration(Constants.defaultAcceleration,0)
+			//		break;					
+			//	}
+			//	case Keyboard.SPACE:{
+			//		currentState = new PauseState(this)
+			//	}
+			//	//case Keyboard.ESCAPE:{
+			//	//	isEditor = !isEditor;
+			//	//}
+			//}
 		}
 		
 		public function handleNewSize(newWidth:int, newHeight:int):void 
@@ -259,12 +265,22 @@ package
 		public function handleMouseDown(e:flash.events.MouseEvent):void 
 		{
 			trace("mouseDown", e.stageX, e.stageY, e.target)
-			if (isEditor){
-				if (e.target is Food){//прибрати цю їжу з екрану
-					removeFood(e.target as Food)
-				}else{//створити нову у координатах
-					createFood(e.stageX, e.stageY)
-				}
+			currentState.handleMouseDown(e)
+			//if (isEditor){
+			//	if (e.target is Food){//прибрати цю їжу з екрану
+			//		removeFood(e.target as Food)
+			//	}else{//створити нову у координатах
+			//		createFood(e.stageX, e.stageY)
+			//	}
+			//}
+		}
+		
+		public function toggleFoodAt(fx:Number, fy:Number, f:Food):void 
+		{
+			if (f){
+				this.removeFood(f)
+			}else{
+				this.createFood(fx, fy)
 			}
 		}
 		
