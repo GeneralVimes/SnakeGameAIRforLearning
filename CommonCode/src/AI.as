@@ -30,7 +30,16 @@ package
 			trace("Making a decision")
 			if (foodList.length>0){
 				var f:Food = foodList[0];
-				mySnake.receiveAcceleration((f.x-mySnake.headX)*Constants.defaultAcceleration, (f.y-mySnake.headY)*Constants.defaultAcceleration)
+				
+				var ax:Number = (f.x-mySnake.headX)
+				var ay:Number = (f.y - mySnake.headY)
+				var a:Number = Math.sqrt(ax * ax + ay * ay);
+				var coef:Number = 1;
+				if (a!=0){
+					coef = Constants.defaultAcceleration / a;
+				}
+				
+				mySnake.receiveAcceleration(ax*coef, ay*coef)
 			}
 		}
 		
