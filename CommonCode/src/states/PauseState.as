@@ -20,7 +20,7 @@ package states
 		override public function initialize(paramsOb:Object):void 
 		{
 			super.initialize(paramsOb);
-			tf = new TextField();
+			tf = ObjectPool.pool.getObjectFromPool(TextField) as TextField
 			tf.text = "PAUSED"
 			myField.addChild(tf);			
 		}
@@ -29,6 +29,7 @@ package states
 		{
 			super.finalize();
 			myField.removeChild(tf)
+			ObjectPool.pool.returnObject2Pool(TextField, tf);
 		}
 		override public function handleKeyDown(e:KeyboardEvent):void 
 		{
