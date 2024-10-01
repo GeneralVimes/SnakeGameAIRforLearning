@@ -22,12 +22,13 @@ package
 		private var stageRect:Rectangle
 		private var foodList:Vector.<Food>
 		
-		private var foodPool:Vector.<Food>
-
+		
 		private var currentState:GameState
 		public function Field() 
 		{
 			super();
+			var p:ObjectPool = new ObjectPool()
+			
 			stageRect = new Rectangle(
 									0, 
 									0, 
@@ -45,7 +46,6 @@ package
 			addChild(awayMarker)
 			
 			foodList = new Vector.<Food>()
-			foodPool = new Vector.<Food>()
 			//for (var k:int = 0; k < 10; k++){
 			//	createFood()
 			//}	
@@ -69,22 +69,19 @@ package
 			if (f.parent){
 				f.parent.removeChild(f)
 			}
+			
+			ObjectPool.pool.returnFood2Pool(f);
 		}
 		
 		private function createFood(fx:Number, fy:Number):void 
 		{//створюємо нову їжу
 			//перш ніж створювати їжу через new, треба перервірити, раптом вже була створена їжа та прибрана з екрану
-			if (foodPool.length>0){
-				var f:Food = foodPool.pop()
-			}else{//а якщо в пулі їжи нема, то створюємо нову
-				f = new Food();
-			}
+			var f:Food = ObjectPool.pool.getFoodFromPool();
 			
 			f.x = fx//;
 			f.y = fy//;
 			addChild(f)
 			foodList.push(f)
-			
 			
 		}
 		public function step(dt:Number):void{
@@ -108,7 +105,7 @@ package
 					snake.createNewSegment()//збільшуємо змію
 					
 					//повертаємо їжу до пулу
-					foodPool.push(f)
+					ObjectPool.pool.returnFood2Pool(f);
 				}
 			}
 			
