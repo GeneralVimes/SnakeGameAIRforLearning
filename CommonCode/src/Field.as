@@ -70,13 +70,13 @@ package
 				f.parent.removeChild(f)
 			}
 			
-			ObjectPool.pool.returnFood2Pool(f);
+			ObjectPool.pool.returnObject2Pool(Food,f)//.returnFood2Pool(f);
 		}
 		
 		private function createFood(fx:Number, fy:Number):void 
 		{//створюємо нову їжу
 			//перш ніж створювати їжу через new, треба перервірити, раптом вже була створена їжа та прибрана з екрану
-			var f:Food = ObjectPool.pool.getFoodFromPool();
+			var f:Food = ObjectPool.pool.getObjectFromPool(Food) as Food//getFoodFromPool();
 			
 			f.x = fx//;
 			f.y = fy//;
@@ -105,7 +105,7 @@ package
 					snake.createNewSegment()//збільшуємо змію
 					
 					//повертаємо їжу до пулу
-					ObjectPool.pool.returnFood2Pool(f);
+					ObjectPool.pool.returnObject2Pool(Food,f)//returnFood2Pool(f);
 				}
 			}
 			
@@ -291,7 +291,7 @@ package
 		
 		private function createObstacle(fx:Number, fy:Number):void 
 		{
-			var f:Obstacle = ObjectPool.pool.getObstacleFromPool();
+			var f:Obstacle = ObjectPool.pool.getObjectFromPool(Obstacle) as Obstacle//getObstacleFromPool();
 			f.x = fx;
 			f.y = fy;
 			addChild(f);
@@ -302,7 +302,7 @@ package
 			if (f.parent){
 				f.parent.removeChild(f)
 			}
-			ObjectPool.pool.returnObstacle2Pool(f);
+			ObjectPool.pool.returnObject2Pool(Obstacle,f)//.returnObstacle2Pool(f);
 		}
 		
 		public function handleSnakeAccelerationKeys(e:flash.events.KeyboardEvent):Boolean 
