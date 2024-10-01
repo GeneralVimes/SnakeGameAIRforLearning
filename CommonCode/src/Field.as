@@ -280,6 +280,31 @@ package
 			}
 		}
 		
+		public function toggleObstacleAt(fx:Number, fy:Number, f:Obstacle):void 
+		{
+			if (f){
+				this.removeObstacle(f)
+			}else{
+				this.createObstacle(fx, fy)
+			}
+		}
+		
+		private function createObstacle(fx:Number, fy:Number):void 
+		{
+			var f:Obstacle = ObjectPool.pool.getObstacleFromPool();
+			f.x = fx;
+			f.y = fy;
+			addChild(f);
+		}
+		
+		private function removeObstacle(f:Obstacle):void 
+		{
+			if (f.parent){
+				f.parent.removeChild(f)
+			}
+			ObjectPool.pool.returnObstacle2Pool(f);
+		}
+		
 		public function handleSnakeAccelerationKeys(e:flash.events.KeyboardEvent):Boolean 
 		{
 			var res:Boolean = false;

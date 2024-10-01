@@ -9,6 +9,7 @@ package
 		static public var pool:ObjectPool
 		
 		private var foodPool:Vector.<Food>
+		private var obstaclePool:Vector.<Obstacle>
 		public function ObjectPool() 
 		{
 			//ObjectPool - це синглтон, об'єкт, що існує у єдиному екземплярі та до нього інші матимуть доступ через ObjectPool.pool
@@ -18,6 +19,7 @@ package
 			
 			pool = this;
 			foodPool = new Vector.<Food>()
+			obstaclePool = new Vector.<Obstacle>()
 		}
 		
 		public function getFoodFromPool():Food{
@@ -30,6 +32,18 @@ package
 		
 		public function returnFood2Pool(f:Food):void{
 			foodPool.push(f)
+		}
+		
+		public function getObstacleFromPool():Obstacle{
+			if (obstaclePool.length>0){
+				return obstaclePool.pop()
+			}else{
+				return new Obstacle();
+			}
+		}
+		
+		public function returnObstacle2Pool(f:Obstacle):void{
+			obstaclePool.push(f)
 		}
 		
 	}

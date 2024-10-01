@@ -26,7 +26,12 @@ package states
 		override public function handleMouseDown(e:flash.events.MouseEvent):void 
 		{
 			super.handleMouseDown(e);
-			myField.toggleFoodAt(e.stageX, e.stageY, e.target as Food)
+			if (e.ctrlKey){
+				myField.toggleObstacleAt(e.stageX, e.stageY, e.target as Obstacle)
+			}else{
+				myField.toggleFoodAt(e.stageX, e.stageY, e.target as Food)
+			}
+			
 		}
 	}
 
